@@ -16,6 +16,7 @@ namespace Blog.Controllers
             try
             {
                 var categories = await context.Categories.ToListAsync();
+
                 return Ok(new ResultViewModel<List<Category>>(categories));
             }
             catch
@@ -30,8 +31,10 @@ namespace Blog.Controllers
             try
             {
                 var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
                 if (category == null)
                     return NotFound(new ResultViewModel<Category>("Conteúdo não encontrado"));
+
                 return Ok(new ResultViewModel<Category>(category));
             }
             catch
@@ -45,6 +48,7 @@ namespace Blog.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ResultViewModel<Category>(ModelState.GetErrors()));
+
             try
             {
                 var category = new Category
@@ -53,8 +57,10 @@ namespace Blog.Controllers
                     Name = model.Name,
                     Slug = model.Slug.ToLower()
                 };
+
                 await context.Categories.AddAsync(category);
                 await context.SaveChangesAsync();
+
                 return Created($"v1/categories/{category.Id}", new ResultViewModel<Category>(category));
             }
             catch (DbUpdateException)
@@ -76,12 +82,15 @@ namespace Blog.Controllers
             try
             {
                 var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
                 if (category == null)
                     return NotFound(new ResultViewModel<Category>("Conteúdo não encontrado"));
+
                 category.Name = model.Name;
                 category.Slug = model.Slug;
                 context.Categories.Update(category);
                 await context.SaveChangesAsync();
+
                 return Ok(new ResultViewModel<Category>(category));
             }
             catch (DbUpdateException)
@@ -100,10 +109,13 @@ namespace Blog.Controllers
             try
             {
                 var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
                 if (category == null)
                     return NotFound(new ResultViewModel<Category>("Conteúdo não encontrado"));
+
                 context.Categories.Remove(category);
                 await context.SaveChangesAsync();
+
                 return Ok(category);
             }
             catch (DbUpdateException)
