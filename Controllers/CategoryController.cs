@@ -57,7 +57,7 @@ namespace Blog.Controllers
                 await context.SaveChangesAsync();
                 return Created($"v1/categories/{category.Id}", new ResultViewModel<Category>(category));
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 return StatusCode(500, new ResultViewModel<Category>("05XE9 - Não foi possível incluir a categoria"));
             }
@@ -84,7 +84,7 @@ namespace Blog.Controllers
                 await context.SaveChangesAsync();
                 return Ok(new ResultViewModel<Category>(category));
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 return StatusCode(500, new ResultViewModel<Category>("05XE8 - Não foi possível atualizar a categoria"));
             }
@@ -106,7 +106,7 @@ namespace Blog.Controllers
                 await context.SaveChangesAsync();
                 return Ok(category);
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 return StatusCode(500, new ResultViewModel<Category>("05XE7 - Não foi possível excluir a categoria"));
             }
